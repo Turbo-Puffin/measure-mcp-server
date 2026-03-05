@@ -1,124 +1,141 @@
 # Measure.events MCP Server
 
-[![MCP](https://img.shields.io/badge/MCP-Compatible-blue)](https://modelcontextprotocol.io)
+[![MCP](https://img.shields.io/badge/MCP-compatible-brightgreen)](https://modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Connect AI agents to your web analytics. [Measure.events](https://measure.events) is the first analytics platform with a native [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server — your AI assistant can query traffic data, generate reports, and monitor trends without a dashboard.
+A [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server for [Measure.events](https://measure.events) — privacy-first web analytics that AI agents can use natively.
+
+Connect your AI coding assistant (Claude Desktop, Cursor, Windsurf, etc.) to your web analytics. Ask questions like "how's my traffic this week?" or "what are my top pages?" and get real answers from real data.
 
 ## Why?
 
-AI agents are becoming the primary interface for developer workflows. Your analytics data should be accessible where you work — inside Claude, Cursor, Windsurf, or any MCP-compatible client. No browser tabs. No dashboards. Just ask.
+Every analytics platform has a dashboard. None of them talk to your AI tools.
 
-## Quick Start
+Measure.events is the first analytics platform with a native MCP server. Your AI assistant can check traffic, find top content, identify referrers, and track events — all without you opening a browser.
 
-### Option 1: Use the hosted MCP endpoint (recommended)
-
-Add this to your MCP client configuration:
-
-```json
-{
-  "mcpServers": {
-    "measure-events": {
-      "url": "https://lets.measure.events/mcp",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
-```
-
-Get your API key at [lets.measure.events](https://lets.measure.events) → Settings → API Keys.
-
-### Option 2: Claude Desktop
-
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "measure-events": {
-      "url": "https://lets.measure.events/mcp",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
-```
-
-### Option 3: Cursor / Windsurf
-
-Add to your `.cursor/mcp.json` or equivalent:
-
-```json
-{
-  "mcpServers": {
-    "measure-events": {
-      "url": "https://lets.measure.events/mcp",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
-```
-
-## Available Tools
+## Tools
 
 | Tool | Description |
 |------|-------------|
-| `get_site_analytics` | Get pageviews, visitors, and trends for any time period |
-| `get_site_summary` | Natural language summary of your site's traffic |
-| `get_insights` | AI-generated insights about traffic patterns, drops, and new referrers |
-| `track_event` | Track custom events from your agent workflows |
-| `list_sites` | List all sites in your account |
-| `create_site` | Add a new site to track |
+| `list_sites` | List all tracked sites in your account |
+| `get_pageviews` | Pageview counts with daily time series |
+| `get_top_pages` | Most viewed pages on a site |
+| `get_referrers` | Traffic sources and referring domains |
+| `get_site_summary` | AI-friendly natural language analytics summary |
+| `track_event` | Track custom events (signups, purchases, etc.) |
 
-## Example Conversations
+## Setup
 
-**"How's my site doing this week?"**
+### 1. Get your API key
 
-> Your site received 1,247 pageviews over the last 7 days, up 23% from last week. Top page: /blog/getting-started (312 views). New referrer: dev.to sent 47 visitors. Traffic peaked on Tuesday.
+Sign up at [lets.measure.events](https://lets.measure.events) and grab your API key from Settings.
 
-**"Any issues I should know about?"**
+### 2. Install
 
-> ⚠️ Traffic dropped 45% on Thursday — check if there was a deployment or outage. New referrer: hackernews sent 89 visitors on Monday (spike). Your /pricing page has a 78% bounce rate — consider A/B testing the layout.
+```bash
+npm install @turbo-puffin/measure-mcp-server
+```
 
-**"Track a deployment event"**
+Or run directly with npx:
 
-> ✅ Event tracked: `deployment` with metadata `{version: "2.1.0", environment: "production"}` at 2026-03-05T07:00:00Z.
+```bash
+npx @turbo-puffin/measure-mcp-server
+```
 
-## What is Measure.events?
+### 3. Configure your MCP client
 
-[Measure.events](https://measure.events) is privacy-first web analytics built for the agent era:
+#### Claude Desktop
 
-- **No cookies** — compliant by default
-- **Lightweight** — <1KB tracking script
-- **Agent-native** — MCP server, REST API, `llms.txt` support
-- **$29/month** — unlimited sites, 14-day free trial
+Add to your `claude_desktop_config.json`:
 
-## API Reference
+```json
+{
+  "mcpServers": {
+    "measure": {
+      "command": "npx",
+      "args": ["-y", "@turbo-puffin/measure-mcp-server"],
+      "env": {
+        "MEASURE_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
 
-Full REST API docs: [measure.events/docs](https://measure.events/docs)
+#### Cursor
 
-The MCP server wraps the same API with MCP tool semantics. All tools accept `site_key` or `site_id` parameters to target specific sites.
+Add to your Cursor MCP settings:
 
-## Protocol
+```json
+{
+  "mcpServers": {
+    "measure": {
+      "command": "npx",
+      "args": ["-y", "@turbo-puffin/measure-mcp-server"],
+      "env": {
+        "MEASURE_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
 
-This server implements the [Model Context Protocol](https://modelcontextprotocol.io) specification (version 2024-11-05). It supports:
+#### Windsurf
 
-- Tool discovery via `tools/list`
-- Tool execution via `tools/call`
-- HTTP+SSE transport at `https://lets.measure.events/mcp`
+Add to your Windsurf MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "measure": {
+      "command": "npx",
+      "args": ["-y", "@turbo-puffin/measure-mcp-server"],
+      "env": {
+        "MEASURE_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `MEASURE_API_KEY` | Yes | Your Measure.events API key |
+| `MEASURE_API_URL` | No | Custom API base URL (default: `https://lets.measure.events/api/v1`) |
+
+## Example Usage
+
+Once configured, ask your AI assistant:
+
+- "What's my traffic looking like this week?"
+- "Which pages are getting the most views on propfirmdeck.com?"
+- "Where is my traffic coming from?"
+- "Give me a summary of my analytics"
+- "Track a signup event for my site"
+
+## Hosted MCP Endpoint
+
+Measure.events also provides a hosted MCP endpoint for server-to-server integration:
+
+```
+POST https://lets.measure.events/mcp
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+
+{"jsonrpc": "2.0", "method": "initialize", "id": 1, "params": {"protocolVersion": "2024-11-05", "capabilities": {}, "clientInfo": {"name": "test", "version": "1.0"}}}
+```
+
+## About Measure.events
+
+[Measure.events](https://measure.events) is privacy-first web analytics built for the AI era. No cookies, no personal data, GDPR/CCPA compliant out of the box. The only analytics platform where AI agents are first-class citizens.
+
+- 🔒 Privacy-first — no cookies, no fingerprinting
+- 🤖 Agent-native — MCP server + REST API
+- ⚡ Lightweight — single script tag, <1KB
+- 📊 Real-time — see traffic as it happens
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
-
-## Links
-
-- [Measure.events](https://measure.events) — Marketing site
-- [Dashboard](https://lets.measure.events) — Sign up / log in
-- [API Docs](https://measure.events/docs) — REST API documentation
-- [llms.txt](https://measure.events/llms.txt) — AI-readable site info
+MIT — see [LICENSE](LICENSE) for details.

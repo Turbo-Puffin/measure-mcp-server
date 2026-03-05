@@ -1,0 +1,35 @@
+{
+  "name": "@turbo-puffin/measure-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Measure.events — privacy-first web analytics for AI agents",
+  "main": "src/index.js",
+  "bin": {
+    "measure-mcp-server": "src/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "analytics",
+    "web-analytics",
+    "privacy",
+    "ai-agents",
+    "measure-events"
+  ],
+  "author": "Turbo Puffin, LLC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Turbo-Puffin/measure-mcp-server"
+  },
+  "homepage": "https://measure.events",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

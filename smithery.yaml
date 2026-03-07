@@ -1,0 +1,18 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      apiKey:
+        type: string
+        description: "Your Measure.events API key. Get it from Settings at lets.measure.events"
+    required:
+      - apiKey
+  commandFunction: |-
+    (config) => ({
+      command: "npx",
+      args: ["-y", "@turbo-puffin/measure-mcp-server"],
+      env: {
+        MEASURE_API_KEY: config.apiKey
+      }
+    })

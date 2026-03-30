@@ -24,6 +24,10 @@ Measure.events is the first analytics platform with a native MCP server. Your AI
 | `get_site_summary` | AI-friendly natural language analytics summary |
 | `track_event` | Track custom events (signups, purchases, etc.) |
 
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/turbo-puffin-measure-mcp-server).
+
 ## Setup
 
 ### 1. Get your API key
